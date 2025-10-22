@@ -20,6 +20,22 @@ struct Order {
     }
     
     var itemCount: Int {
-        return items.count
+//        items.reduce(0) { $0 + $1.quantity } - using .reduce()
+        
+        // .reduce(inititalValue) { (accumulator, element) in
+        // return someFunction(for example accumulator + element.field) -> newAccumulator
+        // }
+        
+        //items.reduce(ini value for accumulator -> 0) { (currentTotal, item (element from sequence we working with)) in
+        // return currentTotal + item.quantity
+        // }
+        
+        //after looping through all elements it returns final accumlated value.
+        
+        var itemCount: Int = 0 // using for loop
+        for item in items {
+            itemCount += item.quantity
+        }
+        return itemCount
     }
 }

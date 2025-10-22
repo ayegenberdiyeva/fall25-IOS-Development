@@ -53,19 +53,19 @@ class ShoppingCart {
         let numString = discountCode[firstNumIndex...]
         guard let numDouble = Double(String(numString)) else { return 0 }
         
-        return numDouble * subtotal
+        return numDouble * subtotal * 0.01
     }
     
     var total: Double {
         return subtotal - discountAmount
     }
     
-    var ItemCount: Int {
+    var itemCount: Int {
         return items.reduce(0) { $0 + $1.quantity }
     }
     
     var isEmpty: Bool {
-        if ItemCount == 0 {
+        if itemCount == 0 {
             return true
         } else {
             return false
