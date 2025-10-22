@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 //step 1
 let fisrstName = "Amina"
