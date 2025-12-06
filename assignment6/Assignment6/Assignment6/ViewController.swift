@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var totalTimeLabel: UILabel!
     
-    var tracks: [Track] = []
+    var tracks = TracksManager.shared.tracks
     var originalTracks: [Track] = []
     var shuffledTracks: [Track] = []
     var isShuffling: Bool = false
@@ -33,6 +33,8 @@ class ViewController: UIViewController {
         loadCurrentTrack()
         updateRepeatButton()
         updateShuffleButton()
+        
+        addDetailViewTaps()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,19 +65,30 @@ class ViewController: UIViewController {
     }
     
     func configureTracks() {
-        tracks = [
-            Track(title: "Hello?", artist: "Clairo", coverImageName: "1.png", audioFileName: "1.mp3", duration: 135),
-            Track(title: "Luther", artist: "Kendrick Lamar", coverImageName: "2.png", audioFileName: "2.mp3", duration: 311),
-            Track(title: "Ghost Town", artist: "Kanye West", coverImageName: "3.png", audioFileName: "3.mp3", duration: 271),
-            Track(title: "90210", artist: "Travis Scott", coverImageName: "4.png", audioFileName: "4.mp3", duration: 339),
-            Track(title: "Supernatural", artist: "NewJeans", coverImageName: "5.png", audioFileName: "5.mp3", duration: 190),
-            Track(title: "Gimme Love", artist: "Joji", coverImageName: "6.png", audioFileName: "6.mp3", duration: 225)
-        ]
+//        guard let url = Bundle.main.url(forResource: "mockdata", withExtension: "json") else {
+//            print("JSON file not found")
+//            return
+//        }
+//        
+//        do {
+//            let data = try Data(contentsOf: url)
+//            let decoder = JSONDecoder()
+//            tracks = try decoder.decode([Track].self, from: data)
+//        } catch {
+//            print("Error parsing JSON: ", error)
+//            
+//        }
         
+        tracks = TracksManager.shared.tracks
         originalTracks = tracks
     }
     
     func loadCurrentTrack() {
+        guard !tracks.isEmpty else {
+            print("No tracks to load")
+            return
+        }
+        
         let track = tracks[currentIndex]
         
         trackTitleLabel.text = track.title
@@ -261,6 +274,28 @@ class ViewController: UIViewController {
         vc.currentIndex = 0
         vc.delegate = self
         present(vc, animated: true)
+    }
+    
+    // MARK: track details
+    
+    func addDetailViewTaps() {
+        trackTitleLabel.isUserInteractionEnabled = true
+        coverImageView.isUserInteractionEnabled = true
+        
+        let titleTap = UITapGestureRecognizer(target: self, action: #selector(openTrackDetails))
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(openTrackDetails))
+        
+        trackTitleLabel.addGestureRecognizer(titleTap)
+        coverImageView.addGestureRecognizer(imageTap)
+    }
+    
+    @objc func openTrackDetails() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "TrackDetailsVC") as! DetailViewController
+        
+        vc.track = tracks[currentIndex]
+        navigationController?.pushViewController(vc, animated: true)
+        
     }
 }
 

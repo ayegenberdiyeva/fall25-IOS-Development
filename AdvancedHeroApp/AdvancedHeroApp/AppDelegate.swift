@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Assignment6
+//  AdvancedHeroApp
 //
-//  Created by Amina Yegenberdiyeva on 06.11.2025.
+//  Created by Arman Myrzakanurov on 27.11.2025.
 //
 
 import UIKit
@@ -13,22 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        guard let url = Bundle.main.url(forResource: "mockdata", withExtension: "json") else {
-            print("JSON file not found")
-            return false
-        }
-        
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            let tracks = try decoder.decode([Track].self, from: data)
-            TracksManager.shared.tracks = tracks
-        } catch {
-            print("Error parsing JSON: ", error)
-            
-        }
-        
+        // Override point for customization after application launch.
         return true
     }
 
